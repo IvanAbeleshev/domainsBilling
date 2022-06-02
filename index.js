@@ -2,13 +2,15 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
 const Sequelize = require('./db');
+const router = require('./routes/index');
+
 //import services
 const Godaddy = require('./domainsServices/godaddy');
 const Namecheap = require('./domainsServices/namecheap');
 
 //namecheap test
-const namecheap = new Namecheap(process.env.hostNamecheap, process.env.loginNamecheap, process.env.keyNamecheap, process.env.ipAdr);
-namecheap.getDomainsInfo();
+//const namecheap = new Namecheap(process.env.hostNamecheap, process.env.loginNamecheap, process.env.keyNamecheap, process.env.ipAdr);
+//namecheap.getDomainsInfo();
 
 /*
 //godaddy test
@@ -16,12 +18,15 @@ const godaddyInstance = new Godaddy(process.env.host, process.env.keyGodaddy, pr
 godaddyInstance.getDomainsInfo('/v1/domains');
 */
 
-/*
+
 //express block
 const server = express();
+
+server.use('/api', router);
+
 const startServer = async() =>{
     try{
-        /* connected to db
+        //connected to db
         await Sequelize.authenticate();
         await Sequelize.sync();
         
@@ -31,5 +36,4 @@ const startServer = async() =>{
     }
 }
 
-startServer()
-*/
+startServer();

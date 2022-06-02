@@ -195,7 +195,7 @@ const domainsNamecheap = Sequelize.define('domainsNamecheap', {
         allowNull: false
     },
     isOurDNS: {
-        type: DataTypes.false,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     }
 });
