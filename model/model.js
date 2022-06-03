@@ -1,6 +1,5 @@
 const Sequelize = require('../db');
 const {DataTypes} = require('sequelize');
-const { password } = require('pg/lib/defaults');
 
 const accountGodaddy = Sequelize.define('accountGodaddy',
 {
@@ -202,3 +201,5 @@ const domainsNamecheap = Sequelize.define('domainsNamecheap', {
 
 accountNamecheap.hasMany(domainsNamecheap);
 domainsNamecheap.belongsTo(accountNamecheap);
+
+module.exports = {domainsDataGodaddy, accountGodaddy, domainsNamecheap, accountNamecheap}

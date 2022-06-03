@@ -21,7 +21,7 @@ godaddyInstance.getDomainsInfo('/v1/domains');
 
 //express block
 const server = express();
-
+server.use(express.json());
 server.use('/api', router);
 
 const startServer = async() =>{
