@@ -21,6 +21,7 @@ godaddyInstance.getDomainsInfo('/v1/domains');
 
 //express block
 const server = express();
+//need to add express.json for parse req.body and req.param
 server.use(express.json());
 server.use('/api', router);
 
