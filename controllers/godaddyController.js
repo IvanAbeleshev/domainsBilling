@@ -14,12 +14,14 @@ class GodaddyController{
             return false;
         }
 
-        data.forEach(async(item)=>{
+        data.forEach(async({createdAt, ...item})=>{   
             const newElement = await domainsDataGodaddy.create({...item, accountGodaddyId:idAccount});
-            console.log(newElement);
-        })
+        });
+        
+        return true;
 
     }
+
 }
 
 module.exports = new GodaddyController();

@@ -12,24 +12,21 @@ class Namecheap{
     async getDomainsInfo(){
     
         let url = `${this.host}/xml.response?ApiUser=${this.login}&ApiKey=${this.key}&UserName=${this.login}&ClientIp=${this.ipadress}&Command=namecheap.domains.getList`;
-        //console.log(url);
+
         //return promise
-        const callback = ({data}) =>{
-            xmlParser.parseString(data, (err, result)=>{
+        return axios.get(url);
+        
+    }
+    static transformDataToDB({data}){
+        console.log(data);
+        return xmlParser.parseString(data, (err, result)=>{
                 if(err) {
                     throw err;
                 }
                 const json = JSON.stringify(result, null, 4);
 
-                // log JSON string
-                console.log(json); 
-            });
-
-            //console.log(xmlParser.xml2json(data));
-        };
-
-        return axios.get(url).then(callback);
-        
+                return json;
+        });
     }
 
 }
