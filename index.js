@@ -4,10 +4,6 @@ const express = require('express');
 const Sequelize = require('./db');
 const router = require('./routes/index');
 
-//import services
-const Godaddy = require('./domainsServices/godaddy');
-const Namecheap = require('./domainsServices/namecheap');
-
 //namecheap test
 //const namecheap = new Namecheap(process.env.hostNamecheap, process.env.loginNamecheap, process.env.keyNamecheap, process.env.ipAdr);
 //namecheap.getDomainsInfo();

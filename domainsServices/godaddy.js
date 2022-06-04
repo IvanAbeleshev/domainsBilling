@@ -14,6 +14,7 @@ class Godaddy{
         }
         //return promise
         return axios.get(this.host + uri, arg);
+
         
     }
 
