@@ -9,21 +9,44 @@ class Namecheap{
         this.ipadress = ipadress;
     }
 
-    async getDomainsInfo(){
-
+    getDomainsInfo = async()=>{
+        
         const responseObject = {};
         responseObject.error = false;
         responseObject.message = "";
 
-        pageSize = 20;
-        do{
-            let url = `${this.host}/xml.response?ApiUser=${this.login}&ApiKey=${this.key}&UserName=${this.login}&ClientIp=${this.ipadress}&PageSize=${pageSize}&Command=namecheap.domains.getList`;
+        let currentData;
+        let arrayOutgoingData = [];
 
-            axios.get(url).then(this.transformDataToDB).catch(responseObject.error = true);
-        } while(pageSize == 20)
-        
-        return 
+        const pageSize = 100;
+        let numberPage = 0;
+
+        do{
+            numberPage++;
+            let url = `${this.host}/xml.response?ApiUser=${this.login}&ApiKey=${this.key}&UserName=${this.login}&ClientIp=${this.ipadress}&PageSize=${pageSize}&Page=${numberPage}&Command=namecheap.domains.getList`;  
+            /*currentData = axios.get(url).then(this.transformDataToDB).catch((e)=>{
+                responseObject.error = true;
+                responseObject.message = e.message;
+                return responseObject;
+            });*/
+            try{
+                const urlResponse = await axios.get(url);
+                currentData = this.transformDataToDB(urlResponse);
+            }catch(e){
+                responseObject.error = true;
+                responseObject.message = e.message;
+                return responseObject;    
+            }
+            
+            arrayOutgoingData = arrayOutgoingData.concat(currentData);
+
+        } while(pageSize == currentData.length)
+
+        responseObject.data = arrayOutgoingData;
+
+        return responseObject;
     }
+
     transformDataToDB({data}){
         const arrayOutgoingData = [];
         let arrayOfDomains;
@@ -50,6 +73,9 @@ class Namecheap{
             year = incomingString.slice(-4);
             mounth = incomingString.slice(0, 2);
             day = incomingString.slice(3, 5);
+
+            console.log("incomin string: ", incomingString);
+            console.log("rezult date: ", year+' '+mounth+' '+day);
 
             return new Date(year, mounth, day);
         };

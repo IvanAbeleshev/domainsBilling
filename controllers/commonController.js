@@ -20,13 +20,13 @@ class commonController{
         */
 
         const allNamecheapAccounts = await accountNamecheap.findAll();                
-        allNamecheapAccounts.every(({dataValues})=>{
+        allNamecheapAccounts.every(async({dataValues})=>{
             const namecheapInstance = new Namecheap(process.env.hostNamecheap, dataValues.login, dataValues.key, process.env.ipAdr);
-            addedNewEntries = namecheapInstance.getDomainsInfo().then(rezult=>{
-                                //need transform data to object
-                                const rezultObject = Namecheap.transformDataToDB(rezult);
-                                NamecheapController.addDomainsInfo(rezultObject, dataValues.id);
-                                }).catch(false);        
+            const {error, message, data} = await namecheapInstance.getDomainsInfo();
+            if(!error){
+                addedNewEntries = NamecheapController.addDomainsInfo(data, dataValues.id);
+            }
+                                        
         });
 
         res.json({message: "get update data"});
