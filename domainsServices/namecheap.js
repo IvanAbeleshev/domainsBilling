@@ -74,10 +74,7 @@ class Namecheap{
             mounth = incomingString.slice(0, 2);
             day = incomingString.slice(3, 5);
 
-            console.log("incomin string: ", incomingString);
-            console.log("rezult date: ", year+' '+mounth+' '+day);
-
-            return new Date(year, mounth, day);
+            return new Date(year, Number(mounth)-1, day);
         };
 
         const isBoolean = incomingString=> incomingString==='true'?true:false;
