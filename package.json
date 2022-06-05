@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-xml-bodyparser": "^0.3.0",
     "godaddy": "^0.3.1",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",

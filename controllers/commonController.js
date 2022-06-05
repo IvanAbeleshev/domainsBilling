@@ -25,8 +25,7 @@ class commonController{
             addedNewEntries = namecheapInstance.getDomainsInfo().then(rezult=>{
                                 //need transform data to object
                                 const rezultObject = Namecheap.transformDataToDB(rezult);
-                                console.log(rezultObject);
-                                //NamecheapController.addDomainsInfo(rezultObject, dataValues.id);
+                                NamecheapController.addDomainsInfo(rezultObject, dataValues.id);
                                 }).catch(false);        
         });
 

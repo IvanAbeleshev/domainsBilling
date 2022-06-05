@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const Sequelize = require('./db');
 const router = require('./routes/index');
+const xmlparser = require('express-xml-bodyparser');
 
 //namecheap test
 //const namecheap = new Namecheap(process.env.hostNamecheap, process.env.loginNamecheap, process.env.keyNamecheap, process.env.ipAdr);
@@ -19,6 +20,8 @@ godaddyInstance.getDomainsInfo('/v1/domains');
 const server = express();
 //need to add express.json for parse req.body and req.param
 server.use(express.json());
+server.use(xmlparser());
+
 server.use('/api', router);
 
 const startServer = async() =>{
