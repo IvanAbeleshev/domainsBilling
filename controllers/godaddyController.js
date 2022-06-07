@@ -1,3 +1,4 @@
+const Sequelize = require('../db');
 const {accountGodaddy, domainsDataGodaddy} = require('../model/model');
 
 class GodaddyController{
@@ -22,6 +23,16 @@ class GodaddyController{
 
     }
 
+    async requestGetLastDataOfGodaddyDomains(req, res, next){
+        const StringQuery = `SELECT * FROM public."domainsDataGodaddies"`;
+        const [result, metadata] = await Sequelize.query(StringQuery);
+        //console.log(result);
+        res.json(result);
+    }
+
+    async getLastDataOfGodaddyDomains(){
+        return undefined;
+    }
 }
 
 module.exports = new GodaddyController();
