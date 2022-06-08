@@ -1,3 +1,4 @@
+const { beforeFind } = require('../db');
 const Sequelize = require('../db');
 const {accountGodaddy, domainsDataGodaddy} = require('../model/model');
 
@@ -16,23 +17,53 @@ class GodaddyController{
         }
 
         data.forEach(async({createdAt, ...item})=>{   
-            const newElement = await domainsDataGodaddy.create({...item, accountGodaddyId:idAccount});
+            const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, accountGodaddyId:idAccount});
         });
         
         return true;
 
     }
 
-    async requestGetLastDataOfGodaddyDomains(req, res, next){
-        const StringQuery = `SELECT * FROM public."domainsDataGodaddies"`;
+    async getLastDataOfGodaddyDomains(){
+        const StringQuery = `
+        SELECT 
+            "createdAtGoDaddy" as created,
+            domain,
+            "domainId" as idDomen,
+            max("expires") as expired,
+            "renewAuto" as autoRenew,
+            "exposeWhois" as whoisGuard,
+            max(domains."createdAt") as lastUpdate,
+            'godaddy' as nameService,
+            account.login as login
+        FROM "domainsDataGodaddies" domains
+        JOIN "accountGodaddies" account ON domains."accountGodaddyId" = account.id
+        group by idDomen, domain, created, autoRenew, whoisGuard, account.login`;
         const [result, metadata] = await Sequelize.query(StringQuery);
-        //console.log(result);
+        return result;
+    }
+
+    async requestGetLastDataOfGodaddyDomains(req, res, next){
+        const StringQuery = `
+        SELECT 
+            "createdAtGoDaddy" as created,
+            domain,
+            "domainId" as idDomen,
+            max("expires") as expired,
+            "renewAuto" as autoRenew,
+            "exposeWhois" as whoisGuard,
+            max(domains."createdAt") as lastUpdate,
+            'godaddy' as nameService,
+            account.login as login
+        FROM "domainsDataGodaddies" domains
+        JOIN "accountGodaddies" account ON domains."accountGodaddyId" = account.id
+        group by idDomen, domain, created, autoRenew, whoisGuard, account.login`;
+        const [result, metadata] = await Sequelize.query(StringQuery);
+        //result is object
         res.json(result);
     }
 
-    async getLastDataOfGodaddyDomains(){
-        return undefined;
-    }
+    
 }
 
 module.exports = new GodaddyController();

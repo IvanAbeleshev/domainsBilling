@@ -46,7 +46,7 @@ const domainsDataGodaddy = Sequelize.define('domainsDataGodaddy', {
         primaryKey: true,
         autoIncrement: true
     },
-    createdAt: {
+    createdAtGoDaddy: {
         type: DataTypes.DATE,
         allowNull: false
     },
