@@ -1,3 +1,4 @@
+const Sequelize = require('../db');
 const {accountNamecheap, domainsNamecheap} = require('../model/model');
 
 class NamecheapController{
@@ -16,6 +17,33 @@ class NamecheapController{
         
         return true;
 
+    }
+
+    getLastDataOfNamecheapDomains = async(login)=>{
+        const stringQuery=`
+        SELECT 
+            "created" as created,
+            "name" as domain,
+            "idDomen" as idDomen,
+            max("expires") as expires,
+            "autoRenew" as autoRenew,
+            "whoisGuard" as whoisGuard,
+            max("createdAt") as lastUpdate,
+            'namecheap' as nameService,
+            "user" as login
+        FROM "domainsNamecheaps" domains
+        ${login==undefined? '': `where domains.user = '${login}'`}
+        group by idDomen, domain, created, autoRenew, whoisGuard, login
+        `;
+        const [result, metadata] = await Sequelize.query(stringQuery);
+        return result;
+    }
+
+    requestGetLastDataOfNamecheapDomains = (req, res, next)=>{        
+        const {login} = req.query;
+        const result = this.getLastDataOfNamecheapDomains(login);
+        //result is object
+        result.then((data)=>{res.json(data)});
     }
 }
 

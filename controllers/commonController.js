@@ -7,10 +7,10 @@ const Namecheap = require('../domainsServices/namecheap');
 //import controllers
 const GodaddyController = require('../controllers/godaddyController');
 const NamecheapController = require('../controllers/namecheapController');
-const godaddyController = require('../controllers/godaddyController');
+const { response } = require('express');
 
 class commonController{
-    static async runCollection(req, res){
+    static runCollection = async (req, res) => {
         let addedNewEntries = false;
         
         const allGodaddyAccounts = await accountGodaddy.findAll();                
@@ -30,12 +30,22 @@ class commonController{
                                         
         });
 
-        res.json({message: "get update data"});
+        const getLastData = async()=>{
+            const dataGodaddyDomains = await GodaddyController.getLastDataOfGodaddyDomains();
+            const dataNamecheapDomains = await NamecheapController.getLastDataOfNamecheapDomains();
+    
+            //console.log([...dataGodaddyDomains, ...dataNamecheapDomains]);
+            return [...dataGodaddyDomains, ...dataNamecheapDomains];
+        }
+
+        const responseObject = {};
+        responseObject.error = false;
+        responseObject.message = '';
+        responseObject.data = await getLastData();
+        
+        res.json(responseObject);
     }
 
-    getLastDataOfAllDomains = async()=>{
-
-    }
 }
 
 module.exports = commonController;

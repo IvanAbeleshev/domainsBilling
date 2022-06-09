@@ -50,7 +50,7 @@ class Namecheap{
     transformDataToDB({data}){
         const arrayOutgoingData = [];
         let arrayOfDomains;
-        console.log(data);
+
         const parseString = require('xml2js').parseString;
 
         //potential we can get error

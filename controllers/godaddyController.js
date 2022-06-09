@@ -1,4 +1,3 @@
-const { beforeFind } = require('../db');
 const Sequelize = require('../db');
 const {accountGodaddy, domainsDataGodaddy} = require('../model/model');
 
@@ -24,13 +23,13 @@ class GodaddyController{
 
     }
 
-    async getLastDataOfGodaddyDomains(){
-        const StringQuery = `
+    getLastDataOfGodaddyDomains = async(login)=>{
+        const stringQuery = `
         SELECT 
             "createdAtGoDaddy" as created,
             domain,
             "domainId" as idDomen,
-            max("expires") as expired,
+            max("expires") as expires,
             "renewAuto" as autoRenew,
             "exposeWhois" as whoisGuard,
             max(domains."createdAt") as lastUpdate,
@@ -38,29 +37,17 @@ class GodaddyController{
             account.login as login
         FROM "domainsDataGodaddies" domains
         JOIN "accountGodaddies" account ON domains."accountGodaddyId" = account.id
+        ${login==undefined? '': `where account.login = '${login}'`}
         group by idDomen, domain, created, autoRenew, whoisGuard, account.login`;
-        const [result, metadata] = await Sequelize.query(StringQuery);
+        const [result, metadata] = await Sequelize.query(stringQuery);
         return result;
     }
 
-    async requestGetLastDataOfGodaddyDomains(req, res, next){
-        const StringQuery = `
-        SELECT 
-            "createdAtGoDaddy" as created,
-            domain,
-            "domainId" as idDomen,
-            max("expires") as expired,
-            "renewAuto" as autoRenew,
-            "exposeWhois" as whoisGuard,
-            max(domains."createdAt") as lastUpdate,
-            'godaddy' as nameService,
-            account.login as login
-        FROM "domainsDataGodaddies" domains
-        JOIN "accountGodaddies" account ON domains."accountGodaddyId" = account.id
-        group by idDomen, domain, created, autoRenew, whoisGuard, account.login`;
-        const [result, metadata] = await Sequelize.query(StringQuery);
+    requestGetLastDataOfGodaddyDomains = (req, res, next)=>{
+        const {login} = req.query;
+        const result = this.getLastDataOfGodaddyDomains(login);
         //result is object
-        res.json(result);
+        result.then((data)=>{res.json(data)});
     }
 
     
