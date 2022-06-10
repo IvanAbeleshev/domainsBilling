@@ -11,11 +11,19 @@ class NamecheapController{
     
     addDomainsInfo(data, idAccount){
 
-        data.forEach(async(item)=>{   
-            const newElement = await domainsNamecheap.create({...item, accountNamecheapId:idAccount});
-        });
+        const resultObject = {};
+        resultObject.error = false;
+        resultObject.message = '';
+        try{
+            data.forEach(async(item)=>{   
+                const newElement = await domainsNamecheap.create({...item, accountNamecheapId:idAccount});
+            });
+        }catch(e){
+            resultObject.error = true;
+            resultObject.message = 'Write data namecheap in DB. '+e.message+'/n';             
+        }
         
-        return true;
+        return resultObject;
 
     }
 

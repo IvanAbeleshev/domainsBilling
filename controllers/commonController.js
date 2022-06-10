@@ -7,16 +7,24 @@ const Namecheap = require('../domainsServices/namecheap');
 //import controllers
 const GodaddyController = require('../controllers/godaddyController');
 const NamecheapController = require('../controllers/namecheapController');
-const { response } = require('express');
 
 class commonController{
     static runCollection = async (req, res) => {
-        let addedNewEntries = false;
+        const responseObject = {};
+        responseObject.error = false;
+        responseObject.message = '';
         
         const allGodaddyAccounts = await accountGodaddy.findAll();                
-        allGodaddyAccounts.every(({dataValues})=>{
+        allGodaddyAccounts.every(async({dataValues})=>{
             const godaddyInstance = new Godaddy(process.env.hostGodaddy, dataValues.key, dataValues.secret);
-            addedNewEntries = godaddyInstance.getDomainsInfo('/v1/domains').then(rezult=>{GodaddyController.addDomainsInfo(rezult, dataValues.id)}).catch(false);        
+            const {error, message, data} = await godaddyInstance.getDomainsInfo();        
+            responseObject.error = responseObject.error&&error; 
+            responseObject.message += message;
+            if(!error){
+                const resultWriteInDB = GodaddyController.addDomainsInfo(data, dataValues.id);
+                responseObject.error = responseObject.error&&resultWriteInDB.error; 
+                responseObject.message += resultWriteInDB.message;
+            }
         });
         
 
@@ -24,8 +32,12 @@ class commonController{
         allNamecheapAccounts.every(async({dataValues})=>{
             const namecheapInstance = new Namecheap(process.env.hostNamecheap, dataValues.login, dataValues.key, process.env.ipAdr);
             const {error, message, data} = await namecheapInstance.getDomainsInfo();
+            responseObject.error = responseObject.error&&error; 
+            responseObject.message += message;
             if(!error){
-                addedNewEntries = NamecheapController.addDomainsInfo(data, dataValues.id);
+                const resultWriteInDB = NamecheapController.addDomainsInfo(data, dataValues.id);
+                responseObject.error = responseObject.error&&resultWriteInDB.error; 
+                responseObject.message += resultWriteInDB.message;
             }
                                         
         });
@@ -34,13 +46,9 @@ class commonController{
             const dataGodaddyDomains = await GodaddyController.getLastDataOfGodaddyDomains();
             const dataNamecheapDomains = await NamecheapController.getLastDataOfNamecheapDomains();
     
-            //console.log([...dataGodaddyDomains, ...dataNamecheapDomains]);
             return [...dataGodaddyDomains, ...dataNamecheapDomains];
         }
 
-        const responseObject = {};
-        responseObject.error = false;
-        responseObject.message = '';
         responseObject.data = await getLastData();
         
         res.json(responseObject);

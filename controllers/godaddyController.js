@@ -11,15 +11,26 @@ class GodaddyController{
 
     addDomainsInfo({data}, idAccount){
         //data must be array of object
+        const resultObject = {};
+        resultObject.error = false;
+        resultObject.message = '';
+
         if (!Array.isArray(data)){
-            return false;
+            resultObject.error = true;
+            resultObject.message = 'Write data godaddy domains in DB. Data is empty. /n';
+            return resultObject;
         }
 
-        data.forEach(async({createdAt, ...item})=>{   
-            const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, accountGodaddyId:idAccount});
-        });
+        try{
+            data.forEach(async({createdAt, ...item})=>{   
+                const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, accountGodaddyId:idAccount});
+            });
+        }catch(e){
+            resultObject.error = true;
+            resultObject.message = 'Write data godaddy in DB. '+e.message+'/n';    
+        }
         
-        return true;
+        return resultObject;
 
     }
 

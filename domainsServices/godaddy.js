@@ -7,15 +7,16 @@ class Godaddy{
         this.secret = secret;
     }
 
-    async getDomainsInfo(uri){
+    async getDomainsInfo(){
     
+        const uri = '/v1/domains';
+
         const arg = {
             headers: { 'Authorization': `sso-key ${this.key}:${this.secret}`}
         }
         //return promise
-        return axios.get(this.host + uri, arg);
+        return await axios.get(this.host + uri, arg);
 
-        
     }
 
 }
