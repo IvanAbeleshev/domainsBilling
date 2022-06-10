@@ -1,0 +1,37 @@
+1. post  .../api/godaddy/addAccout
+    body{
+        "name": "name",
+        "login": "Login",
+        "password": "password",
+        "key": "create in personal account",
+        "secret": "create in personal account"
+    }
+    node:
+    https://developer.godaddy.com/keys create new key for api
+
+2. post .../namecheap/addAccount 
+    body{
+        "name": "name",
+        "login": "Login",
+        "password": "Password",
+        "key": "get in personal account"
+    }
+    node:
+    https://www.namecheap.com/support/api/intro/ check list for start use api. Need fixed ip on server and reserve it on namecheap.
+
+3.get .../api/runCollection
+    start collection data from services.  Stucturate data and return as JSON text format:
+    {
+        "error": boolean, //had error in process collection
+        "message": string, // text message what the error heppened
+        "data": [{object}] // array of object. Result collection
+
+    }
+    
+    3.1 get .../api/godaddy/getLastRezult
+            optional(.../api/godaddy/getLastRezult?login=test)
+        return last result collection in db for godaddy sercice
+
+    3.2 get .../api/namecheap/getLastRezult
+            optional(.../api/namecheap/getLastRezult?login=test)
+        return last result collection in db for namecheap sercice
