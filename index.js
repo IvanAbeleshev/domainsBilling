@@ -14,7 +14,7 @@ const xmlparser = require('express-xml-bodyparser');
 const godaddyInstance = new Godaddy(process.env.host, process.env.keyGodaddy, process.env.secretGodaddy);
 godaddyInstance.getDomainsInfo('/v1/domains');
 */
-
+const port = process.env.PORT_SERVER || 7000;
 
 //express block
 const server = express();
@@ -30,7 +30,7 @@ const startServer = async() =>{
         await Sequelize.authenticate();
         await Sequelize.sync();
         
-        server.listen(8000 , ()=>{console.log('Server starting on port 8000')});
+        server.listen(port , ()=>{console.log('Server starting on port 8000')});
     }catch(e){
         console.log(e.message);
     }
