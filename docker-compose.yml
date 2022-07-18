@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: domains_billing
+    volumes:
+      - ./pgdata:/var/lib/postgressql/data
+    
+    ports:
+      - '5432:5432'
+
+  web:
+    image: domain-test
+    depends_on:
+      - db
+    ports:
+      - '7000:7000'
