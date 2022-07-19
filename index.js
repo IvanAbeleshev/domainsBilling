@@ -30,23 +30,22 @@ server.use('/api', router);
 server.get('/', (req, res)=>res.sendFile(path.join(__dirname+'/ui/index.html')));
 
 const startServer = async() =>{
-    await Sequelize.authenticate();
-    await Sequelize.sync();
-    
-    server.listen(port , ()=>{console.log('Server starting on port 8000')});
-}
+    let countTry = 5;
+    for(let i=0; i<=countTry; i++){
+        try{
+            await Sequelize.authenticate();
+            await Sequelize.sync();
+            
+            server.listen(port , ()=>{console.log(`Server starting on port ${port}`)});
+            break;
+        }
+        catch(e){
+            console.log("web server will bee restarted at 5s");
+            await new Promise(res=>setTimeout(res, 5000));
+            
+        }
 
-let countTry = 5;
-for(let i=0; i<=countTry; i++){
-    try{
-        console.log('Current try: ', i);
-        startServer();
-        break;
-    }catch(e){
-        console.log("web server will bee restarted at 5s");
-        setTimeout(() => {
-            console.log(e.message);            
-        }, 5000);
-        
     }
 }
+
+startServer();

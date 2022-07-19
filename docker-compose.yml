@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: domains_billing
     volumes:
-      - ./pgdata:/var/lib/postgressql/data
+      - 'postgres_database:/var/lib/postgresql/data'
     
     ports:
       - '5432:5432'
@@ -18,3 +18,6 @@ services:
       - db
     ports:
       - '7000:7000'
+volumes:
+    postgres_database:
+        external: true
