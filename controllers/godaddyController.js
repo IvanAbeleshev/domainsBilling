@@ -9,7 +9,7 @@ class GodaddyController{
         res.json(newEntry);
     }
 
-    addDomainsInfo({data}, idAccount){
+    addDomainsInfo(data, idAccount){
         //data must be array of object
         const resultObject = {};
         resultObject.error = false;

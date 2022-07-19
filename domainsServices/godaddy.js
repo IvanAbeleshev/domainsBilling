@@ -8,15 +8,32 @@ class Godaddy{
     }
 
     async getDomainsInfo(){
-    
+        const responseObject = {};
+        responseObject.error = false;
+        responseObject.message = "";
+        responseObject.data = undefined;
+
         const uri = '/v1/domains';
 
         const arg = {
             headers: { 'Authorization': `sso-key ${this.key}:${this.secret}`}
         }
-        //return promise
-        return await axios.get(this.host + uri, arg);
 
+        try{
+            const {status, statusText, data} = await axios.get(this.host + uri, arg);
+            if(status!==200){
+                responseObject.error = true;
+                responseObject.message = statusText;
+                return responseObject;
+            }
+            responseObject.data = data;
+        }
+        catch(e){
+            responseObject.error = true;
+            responseObject.message = e.message;  
+        }
+
+        return responseObject;
     }
 
 }

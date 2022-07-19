@@ -18,25 +18,26 @@ class commonController{
         allGodaddyAccounts.every(async({dataValues})=>{
             const godaddyInstance = new Godaddy(process.env.hostGodaddy, dataValues.key, dataValues.secret);
             const {error, message, data} = await godaddyInstance.getDomainsInfo();        
-            responseObject.error = responseObject.error&&error; 
+            responseObject.error = responseObject.error||error; 
             responseObject.message += message;
             if(!error){
                 const resultWriteInDB = GodaddyController.addDomainsInfo(data, dataValues.id);
-                responseObject.error = responseObject.error&&resultWriteInDB.error; 
+                responseObject.error = responseObject.error||resultWriteInDB.error; 
                 responseObject.message += resultWriteInDB.message;
             }
         });
         
+        //error is not saved to object
 
         const allNamecheapAccounts = await accountNamecheap.findAll();                
         allNamecheapAccounts.every(async({dataValues})=>{
             const namecheapInstance = new Namecheap(process.env.hostNamecheap, dataValues.login, dataValues.key, process.env.ipAdr);
             const {error, message, data} = await namecheapInstance.getDomainsInfo();
-            responseObject.error = responseObject.error&&error; 
+            responseObject.error = responseObject.error||error; 
             responseObject.message += message;
             if(!error){
                 const resultWriteInDB = NamecheapController.addDomainsInfo(data, dataValues.id);
-                responseObject.error = responseObject.error&&resultWriteInDB.error; 
+                responseObject.error = responseObject.error||resultWriteInDB.error; 
                 responseObject.message += resultWriteInDB.message;
             }
                                         
