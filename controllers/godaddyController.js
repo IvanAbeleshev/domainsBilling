@@ -4,8 +4,8 @@ const {accountGodaddy, domainsDataGodaddy} = require('../model/model');
 class GodaddyController{
     async addEntry(req, res, next){
         //need to add securite and check data field
-        const{name, login, password, key, secret} = req.body;
-        const newEntry = await accountGodaddy.create({name, login, password, key, secret});
+        const{login, password, key, secret} = req.body;
+        const newEntry = await accountGodaddy.create({name:login, login, password, key, secret});
         res.json(newEntry);
     }
 
