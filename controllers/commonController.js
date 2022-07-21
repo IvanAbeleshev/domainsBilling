@@ -15,7 +15,8 @@ class commonController{
         responseObject.message = '';
         
         const allGodaddyAccounts = await accountGodaddy.findAll();                
-        allGodaddyAccounts.every(async({dataValues})=>{
+        for(let i=0; i<allGodaddyAccounts.length; i++){
+            const {dataValues} = allGodaddyAccounts[i];
             const godaddyInstance = new Godaddy(process.env.hostGodaddy, dataValues.key, dataValues.secret);
             const {error, message, data} = await godaddyInstance.getDomainsInfo();        
             responseObject.error = responseObject.error||error; 
@@ -25,12 +26,13 @@ class commonController{
                 responseObject.error = responseObject.error||resultWriteInDB.error; 
                 responseObject.message += resultWriteInDB.message;
             }
-        });
+        }
         
         //error is not saved to object
 
         const allNamecheapAccounts = await accountNamecheap.findAll();                
-        allNamecheapAccounts.every(async({dataValues})=>{
+        for(let i=0; i<allNamecheapAccounts.length; i++){
+            const {dataValues} = allNamecheapAccounts[i];   
             const namecheapInstance = new Namecheap(process.env.hostNamecheap, dataValues.login, dataValues.key, process.env.ipAdr);
             const {error, message, data} = await namecheapInstance.getDomainsInfo();
             responseObject.error = responseObject.error||error; 
@@ -40,8 +42,7 @@ class commonController{
                 responseObject.error = responseObject.error||resultWriteInDB.error; 
                 responseObject.message += resultWriteInDB.message;
             }
-                                        
-        });
+        }
 
         const getLastData = async()=>{
             const dataGodaddyDomains = await GodaddyController.getLastDataOfGodaddyDomains();
