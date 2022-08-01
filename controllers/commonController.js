@@ -18,7 +18,7 @@ class commonController{
         for(let i=0; i<allGodaddyAccounts.length; i++){
             const {dataValues} = allGodaddyAccounts[i];
             const godaddyInstance = new Godaddy(process.env.hostGodaddy, dataValues.key, dataValues.secret);
-            const {error, message, data} = await godaddyInstance.getDomainsInfo();        
+            const {error, message, data} = await godaddyInstance.getDomainsInfo(dataValues.id, dataValues.name);        
             responseObject.error = responseObject.error||error; 
             responseObject.message += message;
             if(!error){

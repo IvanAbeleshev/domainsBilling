@@ -7,7 +7,7 @@ class Godaddy{
         this.secret = secret;
     }
 
-    async getDomainsInfo(){
+    async getDomainsInfo(idAccount, nameAccount){
         const responseObject = {};
         responseObject.error = false;
         responseObject.message = "";
@@ -23,14 +23,14 @@ class Godaddy{
             const {status, statusText, data} = await axios.get(this.host + uri, arg);
             if(status!==200){
                 responseObject.error = true;
-                responseObject.message = statusText;
+                responseObject.message = `For account ${nameAccount}: ${statusText}\n`;
                 return responseObject;
             }
             responseObject.data = data;
         }
         catch(e){
             responseObject.error = true;
-            responseObject.message = e.message;  
+            responseObject.message = `For account ${nameAccount}: ${e.message}\n`;  
         }
 
         return responseObject;

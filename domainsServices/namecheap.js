@@ -34,7 +34,7 @@ class Namecheap{
                 currentData = this.transformDataToDB(urlResponse);
             }catch(e){
                 responseObject.error = true;
-                responseObject.message = e.message;
+                responseObject.message = `For account ${this.login}: ${e.message}\n`;
                 return responseObject;    
             }
             

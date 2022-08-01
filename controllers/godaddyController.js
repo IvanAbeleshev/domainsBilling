@@ -9,7 +9,7 @@ class GodaddyController{
         res.json(newEntry);
     }
 
-    addDomainsInfo(data, idAccount){
+    async addDomainsInfo(data, idAccount){
         //data must be array of object
         const resultObject = {};
         resultObject.error = false;
@@ -21,9 +21,18 @@ class GodaddyController{
             return resultObject;
         }
 
+        console.log(data[1]);
         try{
-            data.forEach(async({createdAt, ...item})=>{   
-                const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, accountGodaddyId:idAccount});
+            // for(let index = 0; i<data.length; index++){
+            //     console.log(index, data[index]);
+            //     const {createdAt, deletedAt,  ...item} = data[index];
+            //     const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, deleteAtGoDaddy:deletedAt,  accountGodaddyId:idAccount});
+            //     console.log(newElement);  
+            // }
+            data.forEach(async(element)=>{   
+                    const {createdAt, deletedAt,  ...item} = element;
+                    const newElement = await domainsDataGodaddy.create({...item, createdAtGoDaddy: createdAt, deleteAtGoDaddy:deletedAt,  accountGodaddyId:idAccount});
+                    console.log(newElement);
             });
         }catch(e){
             resultObject.error = true;

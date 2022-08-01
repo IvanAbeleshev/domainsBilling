@@ -48,7 +48,11 @@ const domainsDataGodaddy = Sequelize.define('domainsDataGodaddy', {
     },
     createdAtGoDaddy: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
+    },
+    deleteAtGoDaddy: {
+        type: DataTypes.DATE,
+        allowNull: true
     },
     domain: {
         type: DataTypes.STRING,
@@ -60,22 +64,22 @@ const domainsDataGodaddy = Sequelize.define('domainsDataGodaddy', {
     },
     expirationProtected: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     expires: {
         type: DataTypes.DATE,
     },
     exposeWhois: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     holdRegistrar: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     locked: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     nameServers: {
         type: DataTypes.BOOLEAN,
@@ -83,31 +87,27 @@ const domainsDataGodaddy = Sequelize.define('domainsDataGodaddy', {
     },
     privacy: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     registrarCreatedAt: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     renewAuto: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    renewDeadline: {
-        type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     renewable: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     status: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     transferProtected: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     }
 });
 
@@ -163,27 +163,27 @@ const domainsNamecheap = Sequelize.define('domainsNamecheap', {
     },
     user: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     created: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     expires: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     isExpired: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     isLocked: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     autoRenew: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     whoisGuard: {
         type: DataTypes.STRING,
@@ -191,11 +191,11 @@ const domainsNamecheap = Sequelize.define('domainsNamecheap', {
     },
     isPremium: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     },
     isOurDNS: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     }
 });
 
